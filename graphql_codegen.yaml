@@ -1,0 +1,16 @@
+schema: lib/graphql/schema.graphql
+queries_glob: lib/graphql/*.graphql
+output_directory: lib/graphql
+scalar_mapping:
+  JSONString: "Map<String, dynamic>"
+  JSON: "Map<String, dynamic>"
+  Date: "DateTime"
+  DateTime: "DateTime"
+  Upload: "MultipartFile"
+  PositiveDecimal: "double"
+  Decimal: "double"
+  WeightScalar: "double"
+  UUID: "String"
+  Minute: "int"
+  Day: "int"
+  Hour: "int"
