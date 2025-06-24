@@ -34,9 +34,3 @@ This project demonstrates clean architecture using **Flutter**, **BLoC**, **Grap
 
 ---
 
-## 🚀 Getting Started
-
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/yourusername/product-browser-app.git
-   cd product-browser-app
