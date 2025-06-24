@@ -1,23 +1,49 @@
-query GetProducts {
-  products(first: 10, channel: "default-channel") {
+fragment ProductFields on Product {
+  id
+  name
+  description
+  thumbnail {
+    url
+  }
+  pricing {
+    priceRange {
+      start {
+        gross {
+          amount
+          currency
+        }
+      }
+    }
+  }
+  category {
+    id
+    name
+  }
+}
+
+query GetProducts($search: String, $categoryIds: [ID!]) {
+  products(
+    first: 10
+    channel: "default-channel"
+    filter: {
+      search: $search
+      categories: $categoryIds
+    }
+  ) {
+    edges {
+      node {
+        ...ProductFields
+      }
+    }
+  }
+}
+
+query GetCategories {
+  categories(first: 10) {
     edges {
       node {
         id
         name
-        description
-        thumbnail {
-          url
-        }
-        pricing {
-          priceRange {
-            start {
-              gross {
-                amount
-                currency
-              }
-            }
-          }
-        }
       }
     }
   }
