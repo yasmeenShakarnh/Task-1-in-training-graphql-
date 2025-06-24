@@ -25,12 +25,23 @@ class _MultiSelectChipState extends State<MultiSelectChip> {
   @override
   Widget build(BuildContext context) {
     return Wrap(
-      spacing: 8,
+      spacing: 10,
+      runSpacing: 8,
       children: widget.categories.map((c) {
         final sel = _selected.contains(c.id);
         return FilterChip(
-          label: Text(c.name),
+          label: Text(
+            c.name,
+            style: TextStyle(
+              color: sel ? Colors.white : Colors.black87,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
           selected: sel,
+          selectedColor: Colors.teal,
+          backgroundColor: Colors.grey[200],
+          checkmarkColor: Colors.white,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
           onSelected: (on) {
             setState(() {
               on ? _selected.add(c.id) : _selected.remove(c.id);

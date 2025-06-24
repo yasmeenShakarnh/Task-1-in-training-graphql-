@@ -57,6 +57,7 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
 
   Future<void> _fetchProducts([Emitter<ProductState>? emit]) async {
     emit?.call(ProductState(loading: true, products: state.products));
+
     final res = await client.query(QueryOptions(
       document: documentNodeQueryGetProducts,
       variables: {
@@ -64,11 +65,31 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
         'categoryIds': _categories.isEmpty ? null : _categories,
       },
     ));
+
     if (res.hasException) {
       emit?.call(ProductState(error: res.exception.toString()));
-    } else {
-      final data = Query$GetProducts.fromJson(res.data!);
-      emit?.call(ProductState(products: data.products?.edges ?? []));
+      return;
     }
+
+    final data = Query$GetProducts.fromJson(res.data!);
+    final allProducts = data.products?.edges ?? [];
+
+    // تصفية محلية: بحث على اسم المنتج فقط (case-insensitive)
+    final filteredByName = _search.isEmpty
+        ? allProducts
+        : allProducts.where((p) {
+            final name = p.node?.name ?? '';
+            return name.toLowerCase().contains(_search.toLowerCase());
+          }).toList();
+
+    // تصفية محلية: فلترة حسب الكاتيجوري المختارة فقط
+    final filteredByCategory = _categories.isEmpty
+        ? filteredByName
+        : filteredByName.where((p) {
+            final cat = p.node?.category;
+            return cat != null && _categories.contains(cat.id);
+          }).toList();
+
+    emit?.call(ProductState(products: filteredByCategory));
   }
 }

@@ -22,7 +22,7 @@ void main() async {
 class MyApp extends StatelessWidget {
   final ValueNotifier<GraphQLClient> client;
 
-  const MyApp({super.key, required this.client}); // 
+  const MyApp({super.key, required this.client});
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
         create: (_) => ProductBloc(client.value),
         child: const MaterialApp(
           debugShowCheckedModeBanner: false,
-          home: ProductListPage(), // 
+          home: ProductListPage(),
         ),
       ),
     );
